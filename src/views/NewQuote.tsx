@@ -7,14 +7,20 @@ const navigateToQuoteView = () => {
 };
 
 interface IProps {
-  addQuote: (quote: string) => void;
+  addQuote: (quote: any) => void;
 }
 
 class NewQuote extends React.Component<RouteComponentProps & IProps, {}> {
-  public state = { newQuoteText: '' };
+  public state = {
+    quote: {
+      by: '',
+      text: ''
+    }
+  };
   constructor(props: IProps) {
     super(props);
-    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleQuoteTextChange = this.handleQuoteTextChange.bind(this);
+    this.handleByTextChange = this.handleByTextChange.bind(this);
     this.handleAddQuoteClicked = this.handleAddQuoteClicked.bind(this);
   }
   public render() {
@@ -22,8 +28,13 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, {}> {
       <>
         <input
           type="text"
-          value={this.state.newQuoteText}
-          onChange={this.handleTextChange}
+          value={this.state.quote.text}
+          onChange={this.handleQuoteTextChange}
+        />
+        <input
+          type="text"
+          value={this.state.quote.by}
+          onChange={this.handleByTextChange}
         />
         <Button whenClicked={this.handleAddQuoteClicked}>Add Quote</Button>
         <Button whenClicked={navigateToQuoteView}>Quote View</Button>
@@ -31,11 +42,24 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, {}> {
     );
   }
   private handleAddQuoteClicked() {
-    this.props.addQuote(this.state.newQuoteText);
-    this.setState({ newQuoteText: '' });
+    this.props.addQuote(this.state.quote);
+    this.setState({ quote: { text: '', by: '' } });
   }
-  private handleTextChange(evt: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ newQuoteText: evt.currentTarget.value });
+  private handleQuoteTextChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      quote: {
+        by: this.state.quote.by,
+        text: evt.currentTarget.value
+      }
+    });
+  }
+  private handleByTextChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      quote: {
+        by: evt.currentTarget.value,
+        text: this.state.quote.text
+      }
+    });
   }
 }
 

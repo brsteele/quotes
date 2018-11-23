@@ -8,7 +8,7 @@ interface IProps {
 const Quote: FunctionComponent<IProps> = ({ quote }) => {
   return (
     <>
-      <h1>{quote.quote}</h1>
+      <h1>{quote.text}</h1>
       <p>{quote.by}</p>
     </>
   );

@@ -12,13 +12,13 @@ interface IState {
 }
 
 export interface IQuote {
-  quote: string;
+  text: string;
   by: string;
 }
 
 const someQuote: IQuote = {
   by: 'Steve Jobs',
-  quote: "Here's to the crazy ones"
+  text: "Here's to the crazy ones"
 };
 
 class App extends Component<{}, IState> {
@@ -48,9 +48,9 @@ class App extends Component<{}, IState> {
     );
   }
 
-  public addQuote(quote: string) {
+  public addQuote(newQuote: IQuote) {
     const updatedQuoteArray = this.state.quotes;
-    updatedQuoteArray.push({ quote, by: 'Some dude' });
+    updatedQuoteArray.push({ text: newQuote.text, by: newQuote.by });
     this.setState({ quotes: updatedQuoteArray });
   }
 
