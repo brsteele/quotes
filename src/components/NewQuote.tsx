@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-export default class NewQuote extends React.Component<{}, {}> {
-  public render() {
-    return <h1>Some component stuff</h1>;
-  }
-}
+const NewQuote: FunctionComponent = () => {
+  return <h1>This is the New Quote UI</h1>;
+};
+
+export default NewQuote;

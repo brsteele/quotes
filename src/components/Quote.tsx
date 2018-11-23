@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
+import { IQuote } from '../App';
 
-export default class Quote extends React.Component<{}, {}> {
-  public render() {
-    return <h1>Some component stuff</h1>;
-  }
+interface IProps {
+  quote: IQuote;
 }
+
+const Quote: FunctionComponent<IProps> = ({ quote }) => {
+  return (
+    <>
+      <h1>{quote.quote}</h1>
+      <p>{quote.by}</p>
+    </>
+  );
+};
+
+export default Quote;

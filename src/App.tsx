@@ -8,13 +8,23 @@ import QuoteView from './views/QuoteView';
 
 interface IState {
   loading: boolean;
-  quotes: string[];
+  quotes: IQuote[];
 }
+
+export interface IQuote {
+  quote: string;
+  by: string;
+}
+
+const someQuote: IQuote = {
+  by: 'Steve Jobs',
+  quote: "Here's to the crazy ones"
+};
 
 class App extends Component<{}, IState> {
   public state = {
     loading: true,
-    quotes: Array()
+    quotes: [someQuote]
   };
   constructor(props: {}) {
     super(props);
@@ -40,7 +50,7 @@ class App extends Component<{}, IState> {
 
   public addQuote(quote: string) {
     const updatedQuoteArray = this.state.quotes;
-    updatedQuoteArray.push(quote);
+    updatedQuoteArray.push({ quote, by: 'Some dude' });
     this.setState({ quotes: updatedQuoteArray });
   }
 

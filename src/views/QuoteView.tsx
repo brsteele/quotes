@@ -1,11 +1,13 @@
 import { navigate, RouteComponentProps } from '@reach/router';
 import React, { FunctionComponent } from 'react';
+import { IQuote } from '../App';
 import Button from '../components/Button';
+import Quote from '../components/Quote';
 
 const navigateToNewQuote = () => navigate('/');
 
 interface IProps {
-  quotes: string[];
+  quotes: IQuote[];
 }
 
 const QuoteView: FunctionComponent<RouteComponentProps & IProps> = ({
@@ -15,7 +17,7 @@ const QuoteView: FunctionComponent<RouteComponentProps & IProps> = ({
 
   return (
     <>
-      <h1>{quoteToDisplay ? quoteToDisplay : 'No quotes'}</h1>
+      {quoteToDisplay ? <Quote quote={quoteToDisplay} /> : <h1>No Quotes</h1>}
       <Button whenClicked={navigateToNewQuote}>Add new quote</Button>
     </>
   );
