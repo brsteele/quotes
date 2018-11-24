@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { IQuote } from '../App';
+import Tags from './Tags';
 
 interface IProps {
   quote: IQuote;
@@ -10,11 +11,7 @@ const Quote: FunctionComponent<IProps> = ({ quote }) => {
     <>
       <h1>{quote.text}</h1>
       <p>{quote.by}</p>
-      {quote.tags
-        ? quote.tags.map((item, index) => {
-            return <p key={index}>{item}</p>;
-          })
-        : null}
+      {quote.tags ? <Tags tags={quote.tags} /> : null}
     </>
   );
 };
