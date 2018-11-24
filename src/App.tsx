@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Button from './components/Button';
 import logo from './logo.svg';
+import HeaderView from './views/HeaderView';
 import NewQuote from './views/NewQuote';
 import QuoteView from './views/QuoteView';
 
@@ -46,9 +47,11 @@ class App extends Component<{}, IState> {
   }
 
   public render() {
+    const userName = this.state.user.loggedIn ? this.state.user.name : '';
     const firstQuote = !this.state.quotes.length ? true : false;
     return (
       <div className="App">
+        <HeaderView name={userName} loggedIn={this.state.user.loggedIn} />
         <header className="App-header">
           {this.state.loading ? (
             <div>Loading...</div>
