@@ -10,6 +10,11 @@ const Quote: FunctionComponent<IProps> = ({ quote }) => {
     <>
       <h1>{quote.text}</h1>
       <p>{quote.by}</p>
+      {quote.tags
+        ? quote.tags.map((item, index) => {
+            return <p key={index}>{item}</p>;
+          })
+        : null}
     </>
   );
 };
