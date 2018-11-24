@@ -1,8 +1,8 @@
 import { navigate, Router } from '@reach/router';
 import React, { Component } from 'react';
 import './App.css';
-import Button from './components/Button';
 import logo from './logo.svg';
+import Button from './components/Button';
 import HeaderView from './views/HeaderView';
 import NewQuote from './views/NewQuote';
 import QuoteView from './views/QuoteView';
