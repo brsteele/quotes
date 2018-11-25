@@ -1,0 +1,103 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "quoteable-20181124160918-authRole",
+			"UnauthRoleArn": "arn:aws:iam::161072208491:role/quoteable-20181124160918-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::161072208491:role/quoteable-20181124160918-authRole",
+			"Region": "us-east-1",
+			"DeploymentBucketName": "quoteable-20181124160918-deployment",
+			"UnauthRoleName": "quoteable-20181124160918-unauthRole",
+			"StackName": "quoteable-20181124160918",
+			"StackId": "arn:aws:cloudformation:us-east-1:161072208491:stack/quoteable-20181124160918/969e4d90-f035-11e8-a028-0a79b0f3a14a"
+		}
+	},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/quoteable-20181124160918-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2018-11-25T23:45:40.451Z",
+			"output": {
+				"S3BucketSecureURL": "https://quoteable-20181124161016--hostingbucket.s3.amazonaws.com",
+				"WebsiteURL": "http://quoteable-20181124161016--hostingbucket.s3-website-us-east-1.amazonaws.com",
+				"Region": "us-east-1",
+				"HostingBucketName": "quoteable-20181124161016--hostingbucket"
+			},
+			"lastPushDirHash": "F9isyiNEDDaZgqT+DjfNGMxcRdI="
+		}
+	},
+	"auth": {
+		"cognito72b91e4d": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/quoteable-20181124160918-deployment/amplify-cfn-templates/auth/cognito72b91e4d-cloudformation-template.yml",
+				"logicalId": "authcognito72b91e4d"
+			},
+			"lastPushTimeStamp": "2018-11-25T23:45:40.451Z",
+			"output": {
+				"CreatedSNSRole": "arn:aws:iam::161072208491:role/cognito72b91e4d_sns-role",
+				"AppClientSecret": "1jhv3dlppdqr914c7n8hqlj2296qaupb5livsmvnv61ho4q839sd",
+				"UserPoolId": "us-east-1_KI3auPQwX",
+				"AppClientIDWeb": "5ecmconttn6f69g4ib02um3r6k",
+				"AppClientID": "42bmuul3n4mira0l4ip8tc9arf",
+				"IdentityPoolId": "us-east-1:15b2d2c3-f3f1-4ee6-9870-e282bdd66489",
+				"IdentityPoolName": "quoteable72b91e4d_identitypool_72b91e4d",
+				"UserPoolName": "quoteable72b91e4d_userpool_72b91e4d"
+			},
+			"lastPushDirHash": "mk7KO0aTdL/HkB7R1JoENx4QXmQ="
+		}
+	},
+	"storage": {},
+	"function": {
+		"quotes": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": [],
+			"lastBuildTimeStamp": "2018-11-25T23:43:57.828Z",
+			"lastPackageTimeStamp": "2018-11-25T23:44:00.229Z",
+			"distZipFilename": "quotes-1543189437-latest-build.zip",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/quoteable-20181124160918-deployment/amplify-cfn-templates/function/quotes-cloudformation-template.json",
+				"logicalId": "functionquotes"
+			},
+			"lastPushTimeStamp": "2018-11-25T23:45:40.458Z",
+			"output": {
+				"Region": "us-east-1",
+				"Arn": "arn:aws:lambda:us-east-1:161072208491:function:quotes",
+				"Name": "quotes"
+			},
+			"lastPushDirHash": "IuHJ4Q8C5nwsL2If1dHeWKfhNoI="
+		}
+	},
+	"api": {
+		"quotes": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "quotes",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			],
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/quoteable-20181124160918-deployment/amplify-cfn-templates/api/quotes-cloudformation-template.json",
+				"logicalId": "apiquotes"
+			},
+			"lastPushTimeStamp": "2018-11-25T23:45:40.458Z",
+			"output": {
+				"ApiName": "quotes",
+				"RootUrl": "https://mv2vm4mxfc.execute-api.us-east-1.amazonaws.com/Prod"
+			},
+			"lastPushDirHash": "RFnDQ2+swmUBo5rlRjPopkLwfPI="
+		}
+	}
+}

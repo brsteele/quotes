@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/quotes",
+            "lambdaFunction": "quotes",
+            "privacy": {
+                "private": true,
+                "auth": "rw"
+            }
+        }
+    ],
+    "resourceName": "quotes",
+    "apiName": "quoteable4be07038",
+    "functionArns": [
+        {
+            "lambdaFunction": "quotes"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "quoteable-20181124160918-authRole",
+        "unAuthRoleName": "quoteable-20181124160918-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "quotes",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
