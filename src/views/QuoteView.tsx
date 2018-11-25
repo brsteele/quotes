@@ -14,7 +14,7 @@ const QuoteView: FunctionComponent<RouteComponentProps & IProps> = ({
   quotes
 }) => {
   const quoteToDisplay = quotes[0];
-
+  // Is there ever a scenario where this is no quote to display?
   return (
     <>
       {quoteToDisplay ? <Quote quote={quoteToDisplay} /> : <h1>No Quotes</h1>}

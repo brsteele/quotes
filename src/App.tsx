@@ -6,6 +6,13 @@ import Button from './components/Button';
 import HeaderView from './views/HeaderView';
 import NewQuote from './views/NewQuote';
 import QuoteView from './views/QuoteView';
+import { withAuthenticator } from 'aws-amplify-react';
+import { API } from 'aws-amplify';
+
+interface IProps {
+  authData: any;
+  authState: string;
+}
 
 interface IState {
   loading: boolean;
@@ -16,43 +23,35 @@ interface IState {
 
 export interface IUser {
   name: string;
-  loggedIn: boolean;
 }
 
 export interface IQuote {
-  text: string;
+  quote: string;
   by: string;
   tags?: string[];
 }
 
-const someQuote: IQuote = {
-  by: 'Steve Jobs',
-  text: "Here's to the crazy ones",
-  tags: ['tech', 'apple']
-};
-
-class App extends Component<{}, IState> {
+class App extends Component<IProps, IState> {
   public state = {
     error: false,
     loading: true,
-    quotes: [someQuote],
+    quotes: new Array(),
     user: {
-      loggedIn: true,
-      name: 'Brian Steele'
+      name: ''
     }
   };
-  constructor(props: {}) {
+  constructor(props: IProps) {
     super(props);
     this.addQuote = this.addQuote.bind(this);
   }
 
   public render() {
-    const userName = this.state.user.loggedIn ? this.state.user.name : '';
+    const { name } = this.state.user;
     const firstQuote = !this.state.quotes.length ? true : false;
     return (
       <div className="App">
-        <HeaderView name={userName} loggedIn={this.state.user.loggedIn} />
         <header className="App-header">
+          <HeaderView name={name} />
           {this.state.loading ? (
             <div>Loading...</div>
           ) : (
@@ -74,21 +73,35 @@ class App extends Component<{}, IState> {
   public addQuote(newQuote: IQuote) {
     const updatedQuoteArray = this.state.quotes;
     updatedQuoteArray.push(newQuote);
-    this.setState({ quotes: updatedQuoteArray });
+    this.setState({ loading: true });
+    API.post('quotes', '/quotes', {
+      body: { ...newQuote, userId: this.props.authData.username }
+    })
+      .then(data => {
+        API.get('quotes', `/quotes/${this.props.authData.username}`, {})
+          .then(response => {
+            console.log(response);
+            this.setState({ quotes: response, loading: false });
+          })
+          .catch(error => console.log(error));
+      })
+      .catch(err => console.log(err));
   }
 
   public componentDidMount() {
     // we'll do a call to get the logged in users quotes here. Depenging on the response, we'll do some navigation For now, let's pretend...
-    setTimeout(() => {
-      this.setState({ loading: false }, () => {
-        if (this.state.quotes.length) {
-          navigate('quote-view');
-        } else {
-          navigate('/');
+    if (this.props.authData.username) {
+      const username = this.props.authData.username;
+      this.setState({
+        user: {
+          name: username
         }
       });
-    }, 2000);
+      API.get('quotes', `/quotes/${username}`, {})
+        .then(data => this.setState({ quotes: data, loading: false }))
+        .catch(err => console.log(err));
+    }
   }
 }
 
-export default App;
+export default withAuthenticator(App);

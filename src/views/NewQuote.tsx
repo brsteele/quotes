@@ -15,7 +15,7 @@ interface IProps {
 export interface INewQuote {
   quote: {
     by: string;
-    text: string;
+    quote: string;
     tags: string;
   };
 }
@@ -27,15 +27,12 @@ class NewQuote extends React.Component<
   public state = {
     quote: {
       by: '',
-      text: '',
+      quote: '',
       tags: ''
     }
   };
   constructor(props: IProps) {
     super(props);
-    this.handleQuoteTextChange = this.handleQuoteTextChange.bind(this);
-    this.handleByTextChange = this.handleByTextChange.bind(this);
-    this.handleTagTextChange = this.handleTagTextChange.bind(this);
     this.handleAddQuoteClicked = this.handleAddQuoteClicked.bind(this);
   }
   public render() {
@@ -44,18 +41,21 @@ class NewQuote extends React.Component<
         {this.props.firstQuote ? <h1>Add your first quote</h1> : null}
         <input
           type="text"
-          value={this.state.quote.text}
-          onChange={this.handleQuoteTextChange}
+          value={this.state.quote.quote}
+          onChange={this.handleTextChange}
+          name="text"
         />
         <input
           type="text"
           value={this.state.quote.by}
-          onChange={this.handleByTextChange}
+          onChange={this.handleTextChange}
+          name="by"
         />
         <input
           type="text"
           value={this.state.quote.tags}
-          onChange={this.handleTagTextChange}
+          onChange={this.handleTextChange}
+          name="tags"
         />
         <Button whenClicked={this.handleAddQuoteClicked}>Add Quote</Button>
         <Button whenClicked={navigateToQuoteView}>Quote View</Button>
@@ -64,39 +64,38 @@ class NewQuote extends React.Component<
   }
   private handleAddQuoteClicked() {
     const quoteToAdd: IQuote = {
-      text: this.state.quote.text,
+      quote: this.state.quote.quote,
       by: this.state.quote.by
     };
     if (this.state.quote.tags.trim().length > 0) {
       quoteToAdd.tags = this.state.quote.tags.split(',');
     }
     this.props.addQuote(quoteToAdd);
-    this.setState({ quote: { text: '', by: '', tags: '' } });
+    this.setState({ quote: { quote: '', by: '', tags: '' } });
   }
-  private handleQuoteTextChange(evt: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      quote: {
-        ...this.state.quote,
-        text: evt.currentTarget.value
-      }
-    });
-  }
-  private handleByTextChange(evt: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      quote: {
-        ...this.state.quote,
-        by: evt.currentTarget.value
-      }
-    });
-  }
-  private handleTagTextChange(evt: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      quote: {
-        ...this.state.quote,
-        tags: evt.currentTarget.value
-      }
-    });
-  }
+
+  private handleTextChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const inputType = evt.target.name;
+    switch (inputType) {
+      case 'text':
+        this.setState({
+          quote: { ...this.state.quote, quote: evt.currentTarget.value }
+        });
+        break;
+      case 'by':
+        this.setState({
+          quote: { ...this.state.quote, by: evt.currentTarget.value }
+        });
+        break;
+      case 'tags':
+        this.setState({
+          quote: { ...this.state.quote, tags: evt.currentTarget.value }
+        });
+        break;
+      default:
+        return;
+    }
+  };
 }
 
 export default NewQuote;
