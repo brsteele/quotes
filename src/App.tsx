@@ -7,7 +7,8 @@ import HeaderView from './views/HeaderView';
 import NewQuote from './views/NewQuote';
 import QuoteView from './views/QuoteView';
 import { withAuthenticator } from 'aws-amplify-react';
-import { API } from 'aws-amplify';
+import { getQuotes, addQuote } from './restQuotes';
+import { IUser, IQuote } from './types';
 
 interface IProps {
   authData: any;
@@ -19,16 +20,6 @@ interface IState {
   quotes: IQuote[];
   error: boolean;
   user: IUser;
-}
-
-export interface IUser {
-  name: string;
-}
-
-export interface IQuote {
-  quote: string;
-  by: string;
-  tags?: string[];
 }
 
 class App extends Component<IProps, IState> {
@@ -71,21 +62,18 @@ class App extends Component<IProps, IState> {
   }
 
   public addQuote(newQuote: IQuote) {
-    const updatedQuoteArray = this.state.quotes;
-    updatedQuoteArray.push(newQuote);
+    const username = this.props.authData.username;
     this.setState({ loading: true });
-    API.post('quotes', '/quotes', {
-      body: { ...newQuote, userId: this.props.authData.username }
-    })
-      .then(data => {
-        API.get('quotes', `/quotes/${this.props.authData.username}`, {})
-          .then(response => {
-            console.log(response);
-            this.setState({ quotes: response, loading: false });
+    addQuote(newQuote, username)
+      .then(() => {
+        getQuotes(username)
+          .then(quotes => {
+            this.setState({ quotes, loading: false });
+            navigate('quote-view');
           })
-          .catch(error => console.log(error));
+          .catch();
       })
-      .catch(err => console.log(err));
+      .catch();
   }
 
   public componentDidMount() {
@@ -97,9 +85,14 @@ class App extends Component<IProps, IState> {
           name: username
         }
       });
-      API.get('quotes', `/quotes/${username}`, {})
-        .then(data => this.setState({ quotes: data, loading: false }))
-        .catch(err => console.log(err));
+      getQuotes(username)
+        .then(response => {
+          this.setState({ quotes: response, loading: false });
+          if (response.length) {
+            navigate('quote-view');
+          }
+        })
+        .catch();
     }
   }
 }

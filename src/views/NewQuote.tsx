@@ -1,6 +1,6 @@
 import { navigate, RouteComponentProps } from '@reach/router';
 import React, { FunctionComponent, ReactHTMLElement } from 'react';
-import { IQuote } from '../App';
+import { IQuote } from '../types';
 import Button from '../components/Button';
 
 const navigateToQuoteView = () => {

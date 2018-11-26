@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { IQuote } from '../App';
+import { IQuote } from '../types';
 import Tags from './Tags';
 
 interface IProps {

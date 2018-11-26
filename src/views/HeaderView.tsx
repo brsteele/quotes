@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { IUser } from '../App';
+import { IUser } from '../types';
 import { Auth } from 'aws-amplify';
 import Button from '../components/Button';
 
