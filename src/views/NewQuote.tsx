@@ -38,7 +38,7 @@ class NewQuote extends React.Component<
   public render() {
     return (
       <>
-        {this.props.firstQuote ? <h1>Add your first quote</h1> : null}
+        {this.props.firstQuote ? <h1>Add your first quote!</h1> : null}
         <input
           type="text"
           value={this.state.quote.quote}
@@ -68,7 +68,6 @@ class NewQuote extends React.Component<
       author: this.state.quote.author,
       quoteId: Date.now().toString()
     };
-    debugger;
     if (this.state.quote.tags.trim().length > 0) {
       quoteToAdd.tags = this.state.quote.tags.split(',');
     }
