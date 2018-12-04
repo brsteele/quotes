@@ -25,13 +25,13 @@
     "Resources": {
         
         
-        "PolicyAPIGWquoteable4be07038auth": {
+        "PolicyAPIGWquoteable48218555auth": {
             "DependsOn": [
-              "quoteable4be07038"
+              "quoteable48218555"
             ],
             "Type": "AWS::IAM::Policy",
             "Properties": {
-              "PolicyName": "PolicyAPIGWquoteable4be07038auth",
+              "PolicyName": "PolicyAPIGWquoteable48218555auth",
               "Roles": [
                 "quoteable-20181124160918-authRole"
               ],
@@ -61,7 +61,7 @@
                             },
                             ":",
                             {
-                              "Ref": "quoteable4be07038"
+                              "Ref": "quoteable48218555"
                             },
                             "/Prod/*",
                             "/quotes/*"
@@ -82,7 +82,7 @@
                             },
                             ":",
                             {
-                              "Ref": "quoteable4be07038"
+                              "Ref": "quoteable48218555"
                             },
                             "/Prod/*",
                             "/quotes"
@@ -103,16 +103,16 @@
           },
         
         
-      "quoteable4be07038": {
+      "quoteable48218555": {
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "quoteable4be07038",
+          "Name": "quoteable48218555",
           "Body": {
             "swagger": "2.0",
             "info": {
               "version": "2018-05-24T17:52:00Z",
-              "title": "quoteable4be07038"
+              "title": "quoteable48218555"
             },
             "host": {
                 "Fn::Join": [
@@ -386,7 +386,7 @@
                   
         
         
-        "functionquotesPermissionquoteable4be07038": {
+        "functionquotesPermissionquoteable48218555": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
@@ -410,7 +410,7 @@
                             },
                             ":",
                             {
-                                "Ref": "quoteable4be07038"
+                                "Ref": "quoteable48218555"
                             },
                             "/*/*/*"
                         ]
@@ -423,13 +423,13 @@
         
         
         
-      "DeploymentAPIGWquoteable4be07038": {
+      "DeploymentAPIGWquoteable48218555": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",
           "StageName": "Prod",
           "RestApiId": {
-            "Ref": "quoteable4be07038"
+            "Ref": "quoteable48218555"
           }
         }
       }
@@ -437,7 +437,7 @@
     "Outputs": {
         "RootUrl": {
             "Description": "Root URL of the API gateway",
-            "Value": {"Fn::Join": ["", ["https://", {"Ref": "quoteable4be07038"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/Prod"]]}
+            "Value": {"Fn::Join": ["", ["https://", {"Ref": "quoteable48218555"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/Prod"]]}
         },
         "ApiName": {
           "Description": "API Friendly name",

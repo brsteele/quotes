@@ -18,14 +18,14 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "quoteable-20181124160918-deployment",
-					"S3Key": "amplify-builds/quotes-1543189437-latest-build.zip"
+					"S3Key": "amplify-builds/quotes-1543276850-latest-build.zip"
 				}
 			}
 		},
 		"LambdaExecutionRole": {
 			"Type": "AWS::IAM::Role",
 			"Properties": {
-				"RoleName": "quoteableLambdaRole969754e4",
+				"RoleName": "quoteableLambdaRole5a0dcdc2",
 				"AssumeRolePolicyDocument": {
 					"Version": "2012-10-17",
 					"Statement": [
@@ -94,7 +94,7 @@
 								"dynamodb:DeleteItem"
 							],
 							"Resource": [
-								"arn:aws:dynamodb:us-east-1:161072208491:table/quotable"
+								"arn:aws:dynamodb:us-east-1:161072208491:table/quoteDb"
 							]
 						}
 					]

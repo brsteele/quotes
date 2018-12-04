@@ -6,6 +6,9 @@ import Quote from '../components/Quote';
 
 interface IProps {
   quotes: IQuote[];
+  getQuotes: (username: string) => void;
+  deleteQuote: (quote: IQuote) => void;
+  username: string;
 }
 
 interface IState {
@@ -23,26 +26,28 @@ export default class QuoteView extends React.Component<
       quotes: this.props.quotes,
       quoteIndex: 0
     };
-    this.navigateToNewQuote = this.navigateToNewQuote.bind(this);
     this.getNewQuoteToDisplay = this.getNewQuoteToDisplay.bind(this);
   }
   public render() {
     const { quotes, quoteIndex } = this.state;
     const quoteToDisplay = quotes[quoteIndex];
+    const deleteQuote = () => this.props.deleteQuote(quoteToDisplay);
+    const navigateToNewQuote = () => navigate('/');
     return (
       <>
-        <Quote quote={quoteToDisplay} />
-        <Button whenClicked={this.navigateToNewQuote}>Add new quote</Button>
-        <Button whenClicked={this.getNewQuoteToDisplay}>Get a new quote</Button>
+        <Quote
+          quote={quoteToDisplay}
+          refreshAction={this.getNewQuoteToDisplay}
+        />
+        <Button whenClicked={navigateToNewQuote}>Add new quote</Button>
+        <Button whenClicked={deleteQuote}>Delete quote</Button>
       </>
     );
   }
-  private navigateToNewQuote() {
-    navigate('/');
-  }
+
   private getNewQuoteToDisplay() {
-    const numberOfQuotes = this.state.quotes.length;
-    const { quoteIndex } = this.state;
+    const { quoteIndex, quotes } = this.state;
+    const numberOfQuotes = quotes.length;
     if (numberOfQuotes === 1) {
       return;
     } else if (numberOfQuotes === 2) {
@@ -50,8 +55,16 @@ export default class QuoteView extends React.Component<
         ? this.setState({ quoteIndex: 0 })
         : this.setState({ quoteIndex: 1 });
     } else {
-      const randomQuote = Math.floor(Math.random() * numberOfQuotes);
-      this.setState({ quoteIndex: randomQuote });
+      const randomQuoteIndex = Math.floor(Math.random() * numberOfQuotes);
+      if (randomQuoteIndex === quoteIndex) {
+        if (randomQuoteIndex === numberOfQuotes - 1) {
+          this.setState({ quoteIndex: randomQuoteIndex - 1 });
+        } else {
+          this.setState({ quoteIndex: randomQuoteIndex + 1 });
+        }
+      } else {
+        this.setState({ quoteIndex: randomQuoteIndex });
+      }
     }
   }
 }

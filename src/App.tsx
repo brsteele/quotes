@@ -7,7 +7,7 @@ import HeaderView from './views/HeaderView';
 import NewQuote from './views/NewQuote';
 import QuoteView from './views/QuoteView';
 import { withAuthenticator } from 'aws-amplify-react';
-import { getQuotes, addQuote } from './restQuotes';
+import { getQuotes, addQuote, deleteQuote } from './restQuotes';
 import { IUser, IQuote } from './types';
 
 interface IProps {
@@ -34,6 +34,8 @@ class App extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.addQuote = this.addQuote.bind(this);
+    this.getQuotes = this.getQuotes.bind(this);
+    this.deleteQuote = this.deleteQuote.bind(this);
   }
 
   public render() {
@@ -53,7 +55,13 @@ class App extends Component<IProps, IState> {
                 addQuote={this.addQuote}
                 firstQuote={firstQuote}
               />
-              <QuoteView quotes={this.state.quotes} path="quote-view" />
+              <QuoteView
+                quotes={this.state.quotes}
+                path="quote-view"
+                getQuotes={this.getQuotes}
+                deleteQuote={this.deleteQuote}
+                username={name}
+              />
             </Router>
           )}
         </header>
@@ -66,12 +74,7 @@ class App extends Component<IProps, IState> {
     this.setState({ loading: true });
     addQuote(newQuote, username)
       .then(() => {
-        getQuotes(username)
-          .then(quotes => {
-            this.setState({ quotes, loading: false });
-            navigate('quote-view');
-          })
-          .catch();
+        this.getQuotes(username);
       })
       .catch();
   }
@@ -85,15 +88,31 @@ class App extends Component<IProps, IState> {
           name: username
         }
       });
-      getQuotes(username)
-        .then(response => {
-          this.setState({ quotes: response, loading: false });
-          if (response.length) {
-            navigate('quote-view');
-          }
-        })
-        .catch();
+      this.getQuotes(username);
     }
+  }
+  public getQuotes(username: string) {
+    this.setState({ loading: true });
+    navigate('/');
+    getQuotes(username)
+      .then(response => {
+        this.setState({ quotes: response, loading: false });
+        if (response.length) {
+          navigate('quote-view');
+        } else {
+          navigate('/');
+        }
+      })
+      .catch();
+  }
+
+  private deleteQuote(quoteToDelete: IQuote) {
+    const { quotes } = this.state;
+    deleteQuote(quoteToDelete, this.state.user.name)
+      .then(res => {
+        this.getQuotes(this.state.user.name);
+      })
+      .catch(err => console.log(err));
   }
 }
 

@@ -3,7 +3,8 @@ export interface IUser {
 }
 
 export interface IQuote {
+  quoteId: string;
   quote: string;
-  by: string;
+  author: string;
   tags?: string[];
 }

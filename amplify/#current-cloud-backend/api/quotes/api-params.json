@@ -10,7 +10,7 @@
         }
     ],
     "resourceName": "quotes",
-    "apiName": "quoteable4be07038",
+    "apiName": "quoteable48218555",
     "functionArns": [
         {
             "lambdaFunction": "quotes"

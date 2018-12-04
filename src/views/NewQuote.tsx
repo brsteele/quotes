@@ -14,7 +14,7 @@ interface IProps {
 
 export interface INewQuote {
   quote: {
-    by: string;
+    author: string;
     quote: string;
     tags: string;
   };
@@ -26,7 +26,7 @@ class NewQuote extends React.Component<
 > {
   public state = {
     quote: {
-      by: '',
+      author: '',
       quote: '',
       tags: ''
     }
@@ -47,9 +47,9 @@ class NewQuote extends React.Component<
         />
         <input
           type="text"
-          value={this.state.quote.by}
+          value={this.state.quote.author}
           onChange={this.handleTextChange}
-          name="by"
+          name="author"
         />
         <input
           type="text"
@@ -65,13 +65,15 @@ class NewQuote extends React.Component<
   private handleAddQuoteClicked() {
     const quoteToAdd: IQuote = {
       quote: this.state.quote.quote,
-      by: this.state.quote.by
+      author: this.state.quote.author,
+      quoteId: Date.now().toString()
     };
+    debugger;
     if (this.state.quote.tags.trim().length > 0) {
       quoteToAdd.tags = this.state.quote.tags.split(',');
     }
     this.props.addQuote(quoteToAdd);
-    this.setState({ quote: { quote: '', by: '', tags: '' } });
+    this.setState({ quote: { quote: '', author: '', tags: '' } });
   }
 
   private handleTextChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,9 +84,9 @@ class NewQuote extends React.Component<
           quote: { ...this.state.quote, quote: evt.currentTarget.value }
         });
         break;
-      case 'by':
+      case 'author':
         this.setState({
-          quote: { ...this.state.quote, by: evt.currentTarget.value }
+          quote: { ...this.state.quote, author: evt.currentTarget.value }
         });
         break;
       case 'tags':

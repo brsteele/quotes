@@ -12,7 +12,7 @@ const awsmobile =  {
     "aws_cloud_logic_custom": [
         {
             "name": "quotes",
-            "endpoint": "https://mv2vm4mxfc.execute-api.us-east-1.amazonaws.com/Prod",
+            "endpoint": "https://qt8byfjwh5.execute-api.us-east-1.amazonaws.com/Prod",
             "region": "us-east-1"
         }
     ]
