@@ -1,8 +1,6 @@
 import { navigate, Router } from '@reach/router';
 import React, { Component } from 'react';
-import './App.css';
-import logo from './logo.svg';
-import Button from './components/Button';
+import styles from './styles/App.module.css';
 import HeaderView from './views/HeaderView';
 import NewQuote from './views/NewQuote';
 import QuoteView from './views/QuoteView';
@@ -42,9 +40,11 @@ class App extends Component<IProps, IState> {
     const { name } = this.state.user;
     const firstQuote = !this.state.quotes.length ? true : false;
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className={styles.appContainer}>
+        <header className={styles.header}>
           <HeaderView name={name} />
+        </header>
+        <div className={styles.contentContainer}>
           {this.state.loading ? (
             <div>Loading...</div>
           ) : (
@@ -64,7 +64,7 @@ class App extends Component<IProps, IState> {
               />
             </Router>
           )}
-        </header>
+        </div>
       </div>
     );
   }

@@ -2,14 +2,18 @@ import React, { FunctionComponent } from 'react';
 
 interface IProps {
   tags: string[];
+  className?: any;
 }
 
-const Tags: FunctionComponent<IProps> = ({ tags }) => {
+const Tags: FunctionComponent<IProps> = ({ tags, ...rest }) => {
   return (
     <>
-      <p>Tags:</p>{' '}
       {tags.map((tag, index) => {
-        return <p key={index}>{tag}</p>;
+        return (
+          <p {...rest} key={index}>
+            {tag}
+          </p>
+        );
       })}
     </>
   );

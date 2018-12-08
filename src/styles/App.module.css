@@ -1,0 +1,16 @@
+.appContainer {
+  min-height: 100vh;
+  background-color: #efefef;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 80px;
+}
+
+.contentContainer {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}

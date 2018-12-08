@@ -39,8 +39,8 @@ class NewQuote extends React.Component<
     return (
       <>
         {this.props.firstQuote ? <h1>Add your first quote!</h1> : null}
-        <input
-          type="text"
+        <textarea
+          rows={6}
           value={this.state.quote.quote}
           onChange={this.handleTextChange}
           name="text"
@@ -75,7 +75,9 @@ class NewQuote extends React.Component<
     this.setState({ quote: { quote: '', author: '', tags: '' } });
   }
 
-  private handleTextChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  private handleTextChange = (
+    evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const inputType = evt.target.name;
     switch (inputType) {
       case 'text':

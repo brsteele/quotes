@@ -2,6 +2,7 @@ import React, { Children, ReactHTMLElement } from 'react';
 
 interface IProps {
   whenClicked: () => void;
+  className?: any;
 }
 
 const Button: React.FunctionComponent<IProps> = ({

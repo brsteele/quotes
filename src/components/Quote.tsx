@@ -1,20 +1,23 @@
 import React, { FunctionComponent } from 'react';
+import styles from '../styles/Quote.module.css';
 import { IQuote } from '../types';
 import Tags from './Tags';
 import Button from './Button';
 
 interface IProps {
   quote: IQuote;
-  refreshAction: () => void;
 }
 
-const Quote: FunctionComponent<IProps> = ({ quote, refreshAction }) => {
+const Quote: FunctionComponent<IProps> = ({ quote }) => {
   return (
     <>
-      <h1>{quote.quote}</h1>
-      <p>{quote.author}</p>
-      {quote.tags ? <Tags tags={quote.tags} /> : null}
-      <Button whenClicked={refreshAction}>Get new quote</Button>
+      <div className={styles.quote}>
+        <p>{quote.quote}</p>
+        <p className={styles.author}>-{quote.author}</p>
+      </div>
+      <div className={styles.tagContainer}>
+        {quote.tags ? <Tags tags={quote.tags} className={styles.tags} /> : null}
+      </div>
     </>
   );
 };

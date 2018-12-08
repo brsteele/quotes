@@ -1,0 +1,51 @@
+.quoteContainer {
+  composes: container from './Card.module.css';
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.actionButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 10px 15px;
+  font-weight: 300;
+  color: #577dbe;
+}
+
+.quote {
+  composes: mainContent from './Card.module.css';
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.quote::after {
+  background-image: url('../images/sanFran.jpg');
+  content: '';
+  background-size: cover;
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.author {
+  composes: subContent from './Card.module.css';
+}
+
+.tagContainer {
+  composes: additionalContent from './Card.module.css';
+}
+
+.tags {
+  composes: tags from './Card.module.css';
+}

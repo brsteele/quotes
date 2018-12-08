@@ -5,10 +5,10 @@ import Button from '../components/Button';
 
 const HeaderView: FunctionComponent<IUser> = ({ name }) => {
   return (
-    <div>
+    <>
       <p>{name}</p>
       <Button whenClicked={signOut}>Log out</Button>
-    </div>
+    </>
   );
 };
 
