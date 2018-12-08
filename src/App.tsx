@@ -2,7 +2,7 @@ import { navigate, Router } from '@reach/router';
 import React, { Component } from 'react';
 import styles from './styles/App.module.css';
 import HeaderView from './views/HeaderView';
-import NewQuote from './views/NewQuote';
+import NewQuoteView from './views/NewQuoteView';
 import QuoteView from './views/QuoteView';
 import { withAuthenticator } from 'aws-amplify-react';
 import { getQuotes, addQuote, deleteQuote } from './restQuotes';
@@ -49,7 +49,7 @@ class App extends Component<IProps, IState> {
             <div>Loading...</div>
           ) : (
             <Router>
-              <NewQuote
+              <NewQuoteView
                 path="/"
                 default={true}
                 addQuote={this.addQuote}
@@ -60,7 +60,6 @@ class App extends Component<IProps, IState> {
                 path="quote-view"
                 getQuotes={this.getQuotes}
                 deleteQuote={this.deleteQuote}
-                username={name}
               />
             </Router>
           )}

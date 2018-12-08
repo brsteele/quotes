@@ -9,7 +9,6 @@ interface IProps {
   quotes: IQuote[];
   getQuotes: (username: string) => void;
   deleteQuote: (quote: IQuote) => void;
-  username: string;
 }
 
 interface IState {
