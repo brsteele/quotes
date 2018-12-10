@@ -41,9 +41,7 @@ class App extends Component<IProps, IState> {
     const firstQuote = !this.state.quotes.length ? true : false;
     return (
       <div className={styles.appContainer}>
-        <header className={styles.header}>
-          <HeaderView name={name} />
-        </header>
+        <HeaderView name={name} />
         <div className={styles.contentContainer}>
           {this.state.loading ? (
             <div>Loading...</div>

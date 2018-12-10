@@ -3,12 +3,6 @@
   background-color: #efefef;
 }
 
-.header {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 80px;
-}
-
 .contentContainer {
   display: flex;
   justify-content: center;

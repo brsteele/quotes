@@ -1,0 +1,42 @@
+.newQuoteContainer {
+  composes: container from './Card.module.css';
+}
+
+.baseNewQuoteContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 20px;
+}
+
+.newQuoteInputContainer {
+  composes: baseNewQuoteContainer;
+}
+
+.newQuoteAuthorContainer {
+  composes: baseNewQuoteContainer;
+}
+
+.newQuoteTagContainer {
+  composes: baseNewQuoteContainer;
+}
+
+.addButtonContainer {
+  composes: baseNewQuoteContainer;
+}
+
+.addButton {
+  cursor: pointer;
+  color: #577dbe;
+  border: none;
+  height: 40px;
+  border-radius: 3px;
+  background: transparent;
+  font-size: 1rem;
+  transition-property: all;
+  transition-duration: 500ms;
+}
+
+.addButton:hover {
+  color: white;
+  background: #577dbe;
+}

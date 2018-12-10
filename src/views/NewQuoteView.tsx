@@ -1,5 +1,6 @@
 import { navigate, RouteComponentProps } from '@reach/router';
 import React, { FunctionComponent, ReactHTMLElement } from 'react';
+import styles from '../styles/NewQuote.module.css';
 import { IQuote } from '../types';
 import Button from '../components/Button';
 
@@ -37,29 +38,47 @@ class NewQuote extends React.Component<
   }
   public render() {
     return (
-      <>
-        {this.props.firstQuote ? <h1>Add your first quote!</h1> : null}
-        <textarea
-          rows={6}
-          value={this.state.quote.quote}
-          onChange={this.handleTextChange}
-          name="text"
-        />
-        <input
-          type="text"
-          value={this.state.quote.author}
-          onChange={this.handleTextChange}
-          name="author"
-        />
-        <input
-          type="text"
-          value={this.state.quote.tags}
-          onChange={this.handleTextChange}
-          name="tags"
-        />
-        <Button whenClicked={this.handleAddQuoteClicked}>Add Quote</Button>
-        <Button whenClicked={navigateToQuoteView}>Quote View</Button>
-      </>
+      <div className={styles.newQuoteContainer}>
+        <div className={styles.newQuoteInputContainer}>
+          <label>
+            {this.props.firstQuote ? 'Add your first quote' : 'Enter a quote'}
+          </label>
+          <textarea
+            rows={6}
+            value={this.state.quote.quote}
+            onChange={this.handleTextChange}
+            name="text"
+          />
+        </div>
+        <div className={styles.newQuoteAuthorContainer}>
+          <label>Who said it?</label>
+          <input
+            type="text"
+            value={this.state.quote.author}
+            onChange={this.handleTextChange}
+            name="author"
+          />
+        </div>
+        <div className={styles.newQuoteTagContainer}>
+          <label>
+            Tags? <span className="smaller">(comma separated)</span>
+          </label>
+          <input
+            type="text"
+            value={this.state.quote.tags}
+            onChange={this.handleTextChange}
+            name="tags"
+          />
+        </div>
+        <div className={styles.addButtonContainer}>
+          <Button
+            className={styles.addButton}
+            whenClicked={this.handleAddQuoteClicked}
+          >
+            Add it!
+          </Button>
+        </div>
+      </div>
     );
   }
   private handleAddQuoteClicked() {

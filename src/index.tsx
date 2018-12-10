@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './styles/reset.css';
 import './styles/fonts.css';
+import './styles/globals.css';
 import * as serviceWorker from './serviceWorker';
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';

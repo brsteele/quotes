@@ -2,7 +2,6 @@ import React, { FunctionComponent } from 'react';
 import styles from '../styles/Quote.module.css';
 import { IQuote } from '../types';
 import Tags from './Tags';
-import Button from './Button';
 
 interface IProps {
   quote: IQuote;
