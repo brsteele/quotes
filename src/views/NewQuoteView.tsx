@@ -101,17 +101,17 @@ class NewQuote extends React.Component<
     switch (inputType) {
       case 'text':
         this.setState({
-          quote: { ...this.state.quote, quote: evt.currentTarget.value }
+          quote: { ...this.state.quote, quote: evt.target.value }
         });
         break;
       case 'author':
         this.setState({
-          quote: { ...this.state.quote, author: evt.currentTarget.value }
+          quote: { ...this.state.quote, author: evt.target.value }
         });
         break;
       case 'tags':
         this.setState({
-          quote: { ...this.state.quote, tags: evt.currentTarget.value }
+          quote: { ...this.state.quote, tags: evt.target.value }
         });
         break;
       default:

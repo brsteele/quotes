@@ -6,6 +6,7 @@ import NewQuoteView from './views/NewQuoteView';
 import QuoteView from './views/QuoteView';
 import { withAuthenticator } from 'aws-amplify-react';
 import { getQuotes, addQuote, deleteQuote } from './restQuotes';
+import { Auth } from 'aws-amplify';
 import { IUser, IQuote } from './types';
 
 interface IProps {
@@ -41,7 +42,16 @@ class App extends Component<IProps, IState> {
     const firstQuote = !this.state.quotes.length ? true : false;
     return (
       <div className={styles.appContainer}>
-        <HeaderView name={name} />
+        <HeaderView
+          name={name}
+          logoutClicked={() => {
+            Auth.signOut()
+              .then(data => {
+                location.reload();
+              })
+              .catch(err => console.log(err));
+          }}
+        />
         <div className={styles.contentContainer}>
           {this.state.loading ? (
             <div>Loading...</div>
