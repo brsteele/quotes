@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Enzyme, { shallow, ShallowRendererProps } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import NewQuoteView, { INewQuote } from './NewQuoteView';
-import { object } from 'prop-types';
 
 Enzyme.configure({ adapter: new Adapter() });
 const firstQuote = false;

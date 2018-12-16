@@ -11,7 +11,7 @@ interface IProps {
   deleteQuote: (quote: IQuote) => void;
 }
 
-interface IState {
+export interface IState {
   quotes: IQuote[];
   quoteIndex: number;
 }
@@ -31,8 +31,6 @@ export default class QuoteView extends React.Component<
   public render() {
     const { quotes, quoteIndex } = this.state;
     const quoteToDisplay = quotes[quoteIndex];
-    const deleteQuote = () => this.props.deleteQuote(quoteToDisplay);
-    const navigateToNewQuote = () => navigate('/');
     return (
       <div className={styles.quoteContainer}>
         <Quote quote={quoteToDisplay} />
@@ -44,12 +42,17 @@ export default class QuoteView extends React.Component<
             Get new quote
           </Button>
           <Button
-            whenClicked={navigateToNewQuote}
+            whenClicked={() => navigate('/')}
             className={styles.actionButton}
           >
             Add new quote
           </Button>
-          <Button whenClicked={deleteQuote} className={styles.actionButton}>
+          <Button
+            whenClicked={() => {
+              this.props.deleteQuote(quoteToDisplay);
+            }}
+            className={styles.actionButton}
+          >
             Delete quote
           </Button>
         </div>
