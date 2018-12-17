@@ -1,13 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import styles from '../styles/Header.module.css';
-import { IUser } from '../types';
+import { IUserState } from '../types';
 import { Auth } from 'aws-amplify';
 import Button from '../components/Button';
 
-const HeaderView: FunctionComponent<IUser & { logoutClicked: () => void }> = ({
-  name,
-  logoutClicked
-}) => {
+const HeaderView: FunctionComponent<
+  IUserState & { logoutClicked: () => void }
+> = ({ name, logoutClicked }) => {
   return (
     <header className={styles.header}>
       <div className={styles.userInitialContainer}>

@@ -1,24 +1,29 @@
 import { navigate, Router } from '@reach/router';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import styles from './styles/App.module.css';
 import HeaderView from './views/HeaderView';
 import NewQuoteView from './views/NewQuoteView';
 import QuoteView from './views/QuoteView';
 import { withAuthenticator } from 'aws-amplify-react';
 import { getQuotes, addQuote, deleteQuote } from './restQuotes';
+import updateUser from './actions/userActions';
 import { Auth } from 'aws-amplify';
-import { IUser, IQuote } from './types';
+import { IUserState, IQuote, IStoreState } from './types';
 
 interface IProps {
   authData: any;
   authState: string;
+  updateUserInfo: (user: IUserState) => any;
+  username: string;
 }
 
 interface IState {
   loading: boolean;
   quotes: IQuote[];
   error: boolean;
-  user: IUser;
+  user: IUserState;
 }
 
 class App extends Component<IProps, IState> {
@@ -38,7 +43,7 @@ class App extends Component<IProps, IState> {
   }
 
   public render() {
-    const { name } = this.state.user;
+    const name = this.props.username;
     const firstQuote = !this.state.quotes.length ? true : false;
     return (
       <div className={styles.appContainer}>
@@ -87,14 +92,9 @@ class App extends Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    // we'll do a call to get the logged in users quotes here. Depenging on the response, we'll do some navigation For now, let's pretend...
     if (this.props.authData.username) {
       const username = this.props.authData.username;
-      this.setState({
-        user: {
-          name: username
-        }
-      });
+      this.props.updateUserInfo(username);
       this.getQuotes(username);
     }
   }
@@ -123,4 +123,23 @@ class App extends Component<IProps, IState> {
   }
 }
 
-export default withAuthenticator(App);
+const mapStateToProps = (state: IStoreState) => {
+  return {
+    username: state.user.name
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    updateUserInfo: (user: IUserState) => {
+      dispatch(updateUser(user));
+    }
+  };
+};
+
+export default withAuthenticator(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);
