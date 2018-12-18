@@ -4,7 +4,7 @@ import quotesReducer from './quoteReducer';
 
 import { IStoreState } from '../types';
 
-const rootReducer = combineReducers<{}>({
+const rootReducer = combineReducers<IStoreState>({
   quotes: quotesReducer,
   user: userReducer
 });

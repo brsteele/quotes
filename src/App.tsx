@@ -94,7 +94,7 @@ class App extends Component<IProps, IState> {
   public componentDidMount() {
     if (this.props.authData.username) {
       const username = this.props.authData.username;
-      this.props.updateUserInfo(username);
+      this.props.updateUserInfo({ name: username });
       this.getQuotes(username);
     }
   }

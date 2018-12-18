@@ -6,11 +6,11 @@ const initState: IUserState = {
 
 const userReducer = (
   state: IUserState = initState,
-  action: IUserActions | any
+  action: IUserActions
 ): IUserState => {
   switch (action.type) {
     case UserActions.UPDATE_USER:
-      return { name: action.payload };
+      return { name: action.payload.name };
     default:
       return state;
   }
