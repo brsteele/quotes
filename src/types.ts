@@ -4,8 +4,9 @@ export interface IStoreState {
 }
 
 export interface IQuotesState {
-  quotesList: [IQuote];
+  quotesList: [IQuote] | null;
   activeQuote: number;
+  quotesLoaded: boolean;
 }
 
 export interface IQuote {
@@ -21,9 +22,11 @@ export interface IQuotesActions {
 }
 
 export enum QuotesActions {
-  ADD_QUOTE,
-  DELETE_QUOTE,
-  UPDATE_QUOTE_INDEX
+  ADD_QUOTE = 'ADD_QUOTE',
+  DELETE_QUOTE = 'DELETE_QUOTE',
+  UPDATE_QUOTE_INDEX = 'UPDATE_QUOTE_INDEX',
+  UPDATE_LOADING_QUOTES = 'UPDATE_LOADING_QUOTES',
+  GET_ALL_QUOTES = 'GET_ALL_QUOTES'
 }
 
 export interface IUserState {
@@ -36,5 +39,5 @@ export interface IUserActions {
 }
 
 export enum UserActions {
-  UPDATE_USER
+  UPDATE_USER = 'UPDATE_USER'
 }

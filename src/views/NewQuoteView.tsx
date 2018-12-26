@@ -1,19 +1,22 @@
-import { navigate, RouteComponentProps } from '@reach/router';
-import React, { FunctionComponent, ReactHTMLElement } from 'react';
+import { RouteComponentProps } from '@reach/router';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { addQuote, getQuotes } from '../restQuotes';
+import { updateQuotesLoaded, updateQuotes } from '../actions/quotesActions';
 import styles from '../styles/NewQuote.module.css';
-import { IQuote } from '../types';
+import { IQuote, IStoreState, IQuotesState } from '../types';
 import Button from '../components/Button';
-
-const navigateToQuoteView = () => {
-  navigate('quote-view');
-};
+import { bool } from 'aws-sdk/clients/signer';
 
 interface IProps {
-  addQuote: (quote: IQuote) => void;
-  firstQuote: boolean;
+  quotes: IQuotesState;
+  username: string;
+  updateQuotesLoaded: (loaded: boolean) => any;
+  updateQuotes: (quotes: [IQuote]) => any;
 }
 
-export interface INewQuote {
+export interface IState {
   quote: {
     author: string;
     quote: string;
@@ -21,10 +24,7 @@ export interface INewQuote {
   };
 }
 
-class NewQuote extends React.Component<
-  RouteComponentProps & IProps,
-  INewQuote
-> {
+class NewQuote extends React.Component<RouteComponentProps & IProps, IState> {
   public state = {
     quote: {
       author: '',
@@ -37,12 +37,13 @@ class NewQuote extends React.Component<
     this.handleAddQuoteClicked = this.handleAddQuoteClicked.bind(this);
   }
   public render() {
+    const firstQuote = this.props.quotes.quotesList
+      ? this.props.quotes.quotesList.length < 1
+      : true;
     return (
       <div className={styles.newQuoteContainer}>
         <div className={styles.newQuoteInputContainer}>
-          <label>
-            {this.props.firstQuote ? 'Add your first quote' : 'Enter a quote'}
-          </label>
+          <label>{firstQuote ? 'Add your first quote' : 'Enter a quote'}</label>
           <textarea
             rows={6}
             value={this.state.quote.quote}
@@ -90,7 +91,13 @@ class NewQuote extends React.Component<
     if (this.state.quote.tags.trim().length > 0) {
       quoteToAdd.tags = this.state.quote.tags.split(',');
     }
-    this.props.addQuote(quoteToAdd);
+    this.props.updateQuotesLoaded(false);
+    addQuote(quoteToAdd, this.props.username).then(() => {
+      getQuotes(this.props.username).then(quotes => {
+        this.props.updateQuotes(quotes);
+        this.props.updateQuotesLoaded(true);
+      });
+    });
     this.setState({ quote: { quote: '', author: '', tags: '' } });
   }
 
@@ -120,4 +127,25 @@ class NewQuote extends React.Component<
   };
 }
 
-export default NewQuote;
+const mapStateToProps = (state: IStoreState) => {
+  return {
+    quotes: state.quotes,
+    username: state.user.name
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    updateQuotesLoaded: (loaded: boolean) => {
+      dispatch(updateQuotesLoaded(loaded));
+    },
+    updateQuotes: (quotes: [IQuote]) => {
+      dispatch(updateQuotes(quotes));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewQuote);

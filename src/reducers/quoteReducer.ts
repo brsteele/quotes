@@ -1,8 +1,9 @@
-import { IQuotesState, IQuotesActions } from '../types';
+import { IQuotesState, IQuotesActions, QuotesActions } from '../types';
 
 const initialState: IQuotesState = {
-  quotesList: [{ quoteId: '', quote: '', author: '' }],
-  activeQuote: 0
+  quotesList: null,
+  activeQuote: 0,
+  quotesLoaded: false
 };
 
 const quotesReducer = (
@@ -10,6 +11,19 @@ const quotesReducer = (
   action: IQuotesActions | any
 ): IQuotesState => {
   switch (action.type) {
+    case QuotesActions.UPDATE_LOADING_QUOTES:
+      return {
+        ...state,
+        quotesLoaded: action.payload
+      };
+    case QuotesActions.GET_ALL_QUOTES:
+      if (action.payload.length) {
+        return { ...state, quotesList: action.payload };
+      } else {
+        return state;
+      }
+    case QuotesActions.UPDATE_QUOTE_INDEX:
+      return { ...state, activeQuote: action.payload };
     default:
       return state;
   }
