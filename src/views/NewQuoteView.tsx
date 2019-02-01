@@ -2,12 +2,11 @@ import { RouteComponentProps } from '@reach/router';
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { addQuote, getQuotes } from '../restQuotes';
+import { promiseToAddQuote, promiseToGetQuotes } from '../restQuotes';
 import { updateQuotesLoaded, updateQuotes } from '../actions/quotesActions';
 import styles from '../styles/NewQuote.module.css';
 import { IQuote, IStoreState, IQuotesState } from '../types';
 import Button from '../components/Button';
-import { bool } from 'aws-sdk/clients/signer';
 
 interface IProps {
   quotes: IQuotesState;
@@ -92,8 +91,8 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, IState> {
       quoteToAdd.tags = this.state.quote.tags.split(',');
     }
     this.props.updateQuotesLoaded(false);
-    addQuote(quoteToAdd, this.props.username).then(() => {
-      getQuotes(this.props.username).then(quotes => {
+    promiseToAddQuote(quoteToAdd, this.props.username).then(() => {
+      promiseToGetQuotes(this.props.username).then(quotes => {
         this.props.updateQuotes(quotes);
         this.props.updateQuotesLoaded(true);
       });

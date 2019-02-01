@@ -2,22 +2,22 @@ import { navigate, Router } from '@reach/router';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { Auth } from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react';
 import HeaderView from './views/HeaderView';
-import NewQuoteView from './views/NewQuoteView';
-import QuoteView from './views/QuoteView';
+import Spinner from './components/Spinner';
 import { IUserState, IQuote, IStoreState } from './types';
-import { getQuotes, addQuote, deleteQuote } from './restQuotes';
+import { promiseToGetQuotes } from './restQuotes';
 import { updateQuotesLoaded, updateQuotes } from './actions/quotesActions';
 import updateUser from './actions/userActions';
 import styles from './styles/App.module.css';
+import { UserData } from 'amazon-cognito-identity-js';
+import QuotesContainerView from './views/QuotesContainerView';
 
 interface IProps {
-  authData: any;
-  updateUserInfo: (user: IUserState) => any;
-  updateAllQuotes: (quotes: [IQuote]) => any;
-  updateQuotesLoaded: (loading: boolean) => any;
+  authData: UserData;
+  updateUserInfo: (user: IUserState) => void;
+  updateAllQuotes: (quotes: [IQuote]) => void;
+  updateQuotesLoaded: (loading: boolean) => void;
   username: string;
   quotesLoaded: boolean;
   quotes: [IQuote] | null;
@@ -26,51 +26,27 @@ interface IProps {
 class App extends Component<IProps> {
   constructor(props: IProps) {
     super(props);
-    this.addQuote = this.addQuote.bind(this);
     this.getQuotes = this.getQuotes.bind(this);
-    this.deleteQuote = this.deleteQuote.bind(this);
     if (this.props.authData.username) {
-      const username = this.props.authData.username;
-      this.props.updateUserInfo({ name: username });
+      this.props.updateUserInfo({ name: this.props.authData.username });
     }
   }
 
   public render() {
     const { quotesLoaded, username } = this.props;
-    const namePresent = this.props.username.length;
+    const namePresent = !!(username && username.length);
     if (!quotesLoaded) {
-      return <div>Loading the app...</div>;
+      return <Spinner />;
     } else if (quotesLoaded && namePresent) {
       return (
         <div className={styles.appContainer}>
-          <HeaderView
-            name={username}
-            logoutClicked={() => {
-              Auth.signOut()
-                .then(data => {
-                  location.reload();
-                })
-                .catch(err => console.log(err));
-            }}
-          />
+          <HeaderView name={username} />
           <div className={styles.contentContainer}>
-            <Router>
-              <NewQuoteView path="/" default={true} />
-              <QuoteView path="quote-view" />
-            </Router>
+            <QuotesContainerView />
           </div>
         </div>
       );
     }
-  }
-
-  public addQuote(newQuote: IQuote) {
-    const username = this.props.username;
-    addQuote(newQuote, username)
-      .then(() => {
-        this.getQuotes();
-      })
-      .catch();
   }
 
   public componentDidUpdate(prevProps: IProps) {
@@ -81,7 +57,7 @@ class App extends Component<IProps> {
 
   public getQuotes() {
     const { username } = this.props;
-    getQuotes(username)
+    promiseToGetQuotes(username)
       .then(response => {
         this.props.updateAllQuotes(response);
         this.props.updateQuotesLoaded(true);
@@ -90,15 +66,6 @@ class App extends Component<IProps> {
         }
       })
       .catch();
-  }
-
-  private deleteQuote(quoteToDelete: IQuote) {
-    const { username } = this.props;
-    deleteQuote(quoteToDelete, username)
-      .then(res => {
-        this.getQuotes();
-      })
-      .catch(err => console.log(err));
   }
 }
 

@@ -9,7 +9,7 @@ import {
   newQuoteIndex,
   updateQuotesLoaded
 } from '../actions/quotesActions';
-import { getQuotes } from '../restQuotes';
+import { promiseToGetQuotes, promiseToDeleteQuote } from '../restQuotes';
 import Button from '../components/Button';
 import Quote from '../components/Quote';
 
@@ -27,6 +27,7 @@ class QuoteView extends React.Component<RouteComponentProps & IProps> {
   constructor(props: IProps) {
     super(props);
     this.getNewQuoteToDisplay = this.getNewQuoteToDisplay.bind(this);
+    this.handleDeleteClicked = this.handleDeleteClicked.bind(this);
   }
   public render() {
     const { quotes, quoteIndex, quotesLoaded } = this.props;
@@ -51,9 +52,7 @@ class QuoteView extends React.Component<RouteComponentProps & IProps> {
               Add new quote
             </Button>
             <Button
-              whenClicked={() => {
-                console.log('delete');
-              }}
+              whenClicked={this.handleDeleteClicked}
               className={styles.actionButton}
             >
               Delete quote
@@ -62,15 +61,39 @@ class QuoteView extends React.Component<RouteComponentProps & IProps> {
         </div>
       );
     } else {
-      return <div>There are not quotes...</div>;
+      return (
+        <>
+          <div>There are no quotes...</div>
+          <Button
+            whenClicked={() => {
+              navigate('/');
+            }}
+            className={styles.actionButton}
+          />
+        </>
+      );
     }
   }
 
   public componentDidMount() {
     this.props.updateQuotesLoaded(true);
-    getQuotes(this.props.user).then(quotes => {
+    promiseToGetQuotes(this.props.user).then(quotes => {
       quotes.length ? this.props.updateAllQuotes(quotes) : navigate('/');
     });
+  }
+
+  private handleDeleteClicked() {
+    if (this.props.quotes) {
+      const quoteToDelete = this.props.quotes[this.props.quoteIndex];
+      this.props.updateQuotesLoaded(false);
+      promiseToDeleteQuote(quoteToDelete, this.props.user).then(() => {
+        promiseToGetQuotes(this.props.user).then(quotes => {
+          this.getNewQuoteToDisplay();
+          this.props.updateAllQuotes(quotes);
+          this.props.updateQuotesLoaded(true);
+        });
+      });
+    }
   }
 
   private getNewQuoteToDisplay() {

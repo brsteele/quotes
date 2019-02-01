@@ -1,11 +1,11 @@
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { IQuote } from './types';
 
-export const getQuotes = (username: string) => {
+export const promiseToGetQuotes = (username: string) => {
   return API.get('quotes', `/quotes/${username}`, {});
 };
 
-export const addQuote = (quote: {}, username: string) => {
+export const promiseToAddQuote = (quote: {}, username: string) => {
   const payload = {
     body: {
       ...quote,
@@ -15,7 +15,7 @@ export const addQuote = (quote: {}, username: string) => {
   return API.post('quotes', '/quotes', payload);
 };
 
-export const deleteQuote = (quote: IQuote, username: string) => {
+export const promiseToDeleteQuote = (quote: IQuote, username: string) => {
   const payload = {
     body: {
       ...quote,
@@ -25,7 +25,7 @@ export const deleteQuote = (quote: IQuote, username: string) => {
   return API.del('quotes', `/quotes/object/${username}/${quote.quoteId}`, {});
 };
 
-export const updateQuote = (quote: {}, username: string) => {
+export const promiseToUpdateQuote = (quote: {}, username: string) => {
   const payload = {
     body: {
       ...quote,
@@ -33,4 +33,8 @@ export const updateQuote = (quote: {}, username: string) => {
     }
   };
   return API.put('quotes', '/quotes', payload);
+};
+
+export const promiseToLogOut = () => {
+  return Auth.signOut();
 };
