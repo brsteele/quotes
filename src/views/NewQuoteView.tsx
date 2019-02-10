@@ -1,9 +1,10 @@
-import { RouteComponentProps } from '@reach/router';
+import { RouteComponentProps, navigate } from '@reach/router';
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { promiseToAddQuote, promiseToGetQuotes } from '../restQuotes';
 import { updateQuotes } from '../actions/quotesActions';
+import { updateLoading } from '../actions/userInterfaceActions';
 import styles from '../styles/NewQuote.module.css';
 import { IQuote, IStoreState, IQuotesState } from '../types';
 import Button from '../components/Button';
@@ -12,6 +13,7 @@ interface IProps {
   quotes: IQuotesState;
   username: string;
   updateQuotes: (quotes: [IQuote]) => any;
+  updateLoading: (loading: boolean) => void;
 }
 
 export interface IState {
@@ -30,6 +32,7 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, IState> {
       tags: ''
     }
   };
+  private firstInput = React.createRef<HTMLTextAreaElement>();
   constructor(props: IProps) {
     super(props);
     this.handleAddQuoteClicked = this.handleAddQuoteClicked.bind(this);
@@ -47,6 +50,7 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, IState> {
             value={this.state.quote.quote}
             onChange={this.handleTextChange}
             name="text"
+            ref={this.firstInput}
           />
         </div>
         <div className={styles.newQuoteAuthorContainer}>
@@ -75,6 +79,13 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, IState> {
       </div>
     );
   }
+  public componentDidMount() {
+    const node = this.firstInput.current;
+    if (node) {
+      node.focus();
+    }
+  }
+
   private handleAddQuoteClicked() {
     const quoteToAdd: IQuote = {
       quote: this.state.quote.quote,
@@ -84,9 +95,12 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, IState> {
     if (this.state.quote.tags.trim().length > 0) {
       quoteToAdd.tags = this.state.quote.tags.split(',');
     }
+    this.props.updateLoading(true);
     promiseToAddQuote(quoteToAdd, this.props.username).then(() => {
       promiseToGetQuotes(this.props.username).then(quotes => {
         this.props.updateQuotes(quotes);
+        this.props.updateLoading(false);
+        navigate('quote-view');
       });
     });
     this.setState({ quote: { quote: '', author: '', tags: '' } });
@@ -129,6 +143,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     updateQuotes: (quotes: [IQuote]) => {
       dispatch(updateQuotes(quotes));
+    },
+    updateLoading: (loading: boolean) => {
+      dispatch(updateLoading(loading));
     }
   };
 };
