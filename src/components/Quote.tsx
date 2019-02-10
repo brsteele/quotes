@@ -2,9 +2,12 @@ import React, { FunctionComponent } from 'react';
 import styles from '../styles/Quote.module.css';
 import { IQuote } from '../types';
 import Tags from './Tags';
+import { checkPropTypes } from 'prop-types';
+import { PresignedPost } from 'aws-sdk/clients/s3';
 
 interface IProps {
   quote: IQuote;
+  handleDelete: (quote: IQuote) => void;
 }
 
 interface IState {
@@ -20,7 +23,7 @@ class Quote extends React.Component<IProps, IState> {
     this.flip = this.flip.bind(this);
   }
   public render() {
-    const { quote } = this.props;
+    const { quote, handleDelete } = this.props;
     const { flipped } = this.state;
     let flippingClass = '';
     if (flipped !== null) {
@@ -29,9 +32,9 @@ class Quote extends React.Component<IProps, IState> {
     return (
       <div className={`${styles.cardContainer} ${flippingClass}`}>
         <CardFront
-          quote={quote.quote}
-          author={quote.author}
+          quote={quote}
           flipFn={this.flip}
+          handleDelete={handleDelete}
         />
         <CardBack tags={quote.tags} flipFn={this.flip} />
       </div>
@@ -45,9 +48,9 @@ class Quote extends React.Component<IProps, IState> {
 }
 
 interface ICardFrontProps {
-  quote: string;
-  author: string;
+  quote: IQuote;
   flipFn: () => void;
+  handleDelete: (quote: IQuote) => void;
 }
 
 interface ICardBackProps {
@@ -57,13 +60,23 @@ interface ICardBackProps {
 
 const CardFront: FunctionComponent<ICardFrontProps> = ({
   quote,
-  author,
-  flipFn
+  flipFn,
+  handleDelete
 }) => {
   return (
     <div className={styles.quote + ' ' + styles.cardFront} onClick={flipFn}>
-      <p>{quote}</p>
-      <p className={styles.author}>-{author}</p>
+      <div className={styles.delete}>
+        <span
+          onClick={evt => {
+            handleDelete(quote);
+            evt.stopPropagation();
+          }}
+        >
+          Delete
+        </span>
+      </div>
+      <p>{quote.quote}</p>
+      <p className={styles.author}>-{quote.author}</p>
     </div>
   );
 };

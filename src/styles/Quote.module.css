@@ -69,6 +69,11 @@
   justify-content: space-between;
 }
 
+.delete {
+  flex-grow: 99;
+  align-self: flex-end;
+}
+
 .quote {
   composes: mainContent from './Card.module.css';
   display: flex;

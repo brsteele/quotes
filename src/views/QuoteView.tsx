@@ -4,7 +4,8 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import styles from '../styles/Quote.module.css';
 import { IQuote, IStoreState } from '../types';
-import { updateQuotes, newQuoteIndex } from '../actions/quotesActions';
+import { updateQuotes } from '../actions/quotesActions';
+import { updateLoading } from '../actions/userInterfaceActions';
 import { promiseToGetQuotes, promiseToDeleteQuote } from '../restQuotes';
 import Button from '../components/Button';
 import Quote from '../components/Quote';
@@ -14,18 +15,14 @@ interface IProps {
   quoteIndex: number;
   user: string;
   loading: boolean;
-  updateQuoteIndex: (index: number) => any;
   updateAllQuotes: (quotes: [IQuote]) => any;
+  updateLoading: (loading: boolean) => void;
 }
 
 class QuoteView extends React.Component<RouteComponentProps & IProps> {
   constructor(props: IProps) {
     super(props);
-    this.getNewQuoteToDisplay = this.getNewQuoteToDisplay.bind(this);
     this.handleDeleteClicked = this.handleDeleteClicked.bind(this);
-    this.randomNumberLessThanOrEqualTo = this.randomNumberLessThanOrEqualTo.bind(
-      this
-    );
   }
   public render() {
     const { quotes, loading } = this.props;
@@ -35,7 +32,13 @@ class QuoteView extends React.Component<RouteComponentProps & IProps> {
       return (
         <div className={styles.gridQuoteContainer}>
           {quotes.map((quote, index) => {
-            return <Quote key={index} quote={quote} />;
+            return (
+              <Quote
+                key={index}
+                quote={quote}
+                handleDelete={this.handleDeleteClicked}
+              />
+            );
           })}
         </div>
       );
@@ -56,43 +59,14 @@ class QuoteView extends React.Component<RouteComponentProps & IProps> {
     }
   }
 
-  private handleDeleteClicked() {
-    if (this.props.quotes) {
-      const quoteToDelete = this.props.quotes[this.props.quoteIndex];
-      promiseToDeleteQuote(quoteToDelete, this.props.user).then(() => {
-        promiseToGetQuotes(this.props.user).then(quotes => {
-          this.getNewQuoteToDisplay();
-          this.props.updateAllQuotes(quotes);
-        });
+  private handleDeleteClicked(quote: IQuote) {
+    this.props.updateLoading(true);
+    promiseToDeleteQuote(quote, this.props.user).then(() => {
+      promiseToGetQuotes(this.props.user).then(quotes => {
+        this.props.updateAllQuotes(quotes);
+        this.props.updateLoading(false);
       });
-    }
-  }
-
-  private getNewQuoteToDisplay() {
-    const { quoteIndex, quotes } = this.props;
-    const numberOfQuotes = quotes ? quotes.length : 0;
-    if (numberOfQuotes === 1) {
-      return;
-    } else if (numberOfQuotes === 2) {
-      quoteIndex === 1
-        ? this.props.updateQuoteIndex(0)
-        : this.props.updateQuoteIndex(1);
-    } else {
-      const nextQuoteIndex = this.randomNumberLessThanOrEqualTo(numberOfQuotes);
-      if (nextQuoteIndex === quoteIndex) {
-        if (nextQuoteIndex === numberOfQuotes - 1) {
-          this.props.updateQuoteIndex(nextQuoteIndex - 1);
-        } else {
-          this.props.updateQuoteIndex(nextQuoteIndex + 1);
-        }
-      } else {
-        this.props.updateQuoteIndex(nextQuoteIndex);
-      }
-    }
-  }
-
-  private randomNumberLessThanOrEqualTo(a: number) {
-    return Math.floor(Math.random() * a);
+    });
   }
 }
 
@@ -110,8 +84,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     updateAllQuotes: (quotes: [IQuote]) => {
       dispatch(updateQuotes(quotes));
     },
-    updateQuoteIndex: (index: number) => {
-      dispatch(newQuoteIndex(index));
+    updateLoading: (loading: boolean) => {
+      dispatch(updateLoading(loading));
     }
   };
 };

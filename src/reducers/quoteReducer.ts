@@ -14,7 +14,7 @@ const quotesReducer = (
       if (action.payload.length) {
         return { ...state, quotesList: action.payload };
       } else {
-        return state;
+        return { quotesList: null, activeQuote: 0 };
       }
     case QuotesActions.UPDATE_QUOTE_INDEX:
       return { ...state, activeQuote: action.payload };
