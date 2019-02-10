@@ -1,3 +1,34 @@
+.cardContainer {
+  width: 100%;
+  max-width: 320px;
+  height: 200px;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+}
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  backface-visibility: hidden;
+}
+
+.cardBack {
+  transform: rotateY(180deg);
+  background: blue;
+}
+
+.cardFront {
+  bakground: white;
+}
+
+.cardContainer:hover {
+  transform: rotateY(180deg);
+  transition: transform 0.5s;
+}
+
 .container {
   display: flex;
   background-color: #fff;

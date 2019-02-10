@@ -3,7 +3,7 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { promiseToAddQuote, promiseToGetQuotes } from '../restQuotes';
-import { updateQuotesLoaded, updateQuotes } from '../actions/quotesActions';
+import { updateQuotes } from '../actions/quotesActions';
 import styles from '../styles/NewQuote.module.css';
 import { IQuote, IStoreState, IQuotesState } from '../types';
 import Button from '../components/Button';
@@ -11,7 +11,6 @@ import Button from '../components/Button';
 interface IProps {
   quotes: IQuotesState;
   username: string;
-  updateQuotesLoaded: (loaded: boolean) => any;
   updateQuotes: (quotes: [IQuote]) => any;
 }
 
@@ -71,12 +70,7 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, IState> {
           />
         </div>
         <div className={styles.addButtonContainer}>
-          <Button
-            className={styles.addButton}
-            whenClicked={this.handleAddQuoteClicked}
-          >
-            Add it!
-          </Button>
+          <Button whenClicked={this.handleAddQuoteClicked}>Add it!</Button>
         </div>
       </div>
     );
@@ -90,11 +84,9 @@ class NewQuote extends React.Component<RouteComponentProps & IProps, IState> {
     if (this.state.quote.tags.trim().length > 0) {
       quoteToAdd.tags = this.state.quote.tags.split(',');
     }
-    this.props.updateQuotesLoaded(false);
     promiseToAddQuote(quoteToAdd, this.props.username).then(() => {
       promiseToGetQuotes(this.props.username).then(quotes => {
         this.props.updateQuotes(quotes);
-        this.props.updateQuotesLoaded(true);
       });
     });
     this.setState({ quote: { quote: '', author: '', tags: '' } });
@@ -135,9 +127,6 @@ const mapStateToProps = (state: IStoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    updateQuotesLoaded: (loaded: boolean) => {
-      dispatch(updateQuotesLoaded(loaded));
-    },
     updateQuotes: (quotes: [IQuote]) => {
       dispatch(updateQuotes(quotes));
     }

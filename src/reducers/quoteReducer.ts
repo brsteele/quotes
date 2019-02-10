@@ -2,8 +2,7 @@ import { IQuotesState, IQuotesActions, QuotesActions } from '../types';
 
 const initialState: IQuotesState = {
   quotesList: null,
-  activeQuote: 0,
-  quotesLoaded: false
+  activeQuote: 0
 };
 
 const quotesReducer = (
@@ -11,11 +10,6 @@ const quotesReducer = (
   action: IQuotesActions | any
 ): IQuotesState => {
   switch (action.type) {
-    case QuotesActions.UPDATE_LOADING_QUOTES:
-      return {
-        ...state,
-        quotesLoaded: action.payload
-      };
     case QuotesActions.GET_ALL_QUOTES:
       if (action.payload.length) {
         return { ...state, quotesList: action.payload };

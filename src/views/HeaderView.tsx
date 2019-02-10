@@ -14,10 +14,10 @@ const HeaderView: FunctionComponent<IUserState> = props => {
       </div>
       <p className={styles.userName}>{name}</p>
       <Button
-        className={styles.logOutButton}
         whenClicked={() => {
           promiseToLogOut().then(() => location.reload());
         }}
+        type="tertiary"
       >
         Log out
       </Button>

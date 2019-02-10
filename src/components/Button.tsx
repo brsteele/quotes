@@ -1,8 +1,9 @@
 import React, { Children, ReactHTMLElement } from 'react';
+import styles from '../styles/Button.module.css';
 
 interface IProps {
   whenClicked: () => void;
-  className?: any;
+  type?: 'primary' | 'secondary' | 'tertiary';
 }
 
 const Button: React.FunctionComponent<IProps> = ({
@@ -10,8 +11,13 @@ const Button: React.FunctionComponent<IProps> = ({
   children,
   ...rest
 }) => {
+  const { type } = { ...rest };
   return (
-    <button {...rest} onClick={whenClicked}>
+    <button
+      {...rest}
+      onClick={whenClicked}
+      className={`${styles.button} ` + (type ? styles[type] : styles.primary)}
+    >
       {children}
     </button>
   );

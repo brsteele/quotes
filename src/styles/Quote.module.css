@@ -1,5 +1,64 @@
-.quoteContainer {
-  composes: container from './Card.module.css';
+.gridQuoteContainer {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: repeat(5, 200px);
+  grid-column-gap: 10px;
+}
+
+.cardContainer {
+  width: 100%;
+  max-width: 320px;
+  height: 200px;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+}
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  backface-visibility: hidden;
+}
+.cardBack {
+  transform: rotateY(180deg);
+  background: blue;
+}
+
+.cardFront {
+  background: white;
+}
+
+.flipped {
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  animation-name: flipToBack;
+  animation-fill-mode: forwards;
+}
+
+.unflipped {
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  animation-name: flipToFront;
+  animation-fill-mode: forwards;
+}
+
+@keyframes flipToBack {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(180deg);
+  }
+}
+@keyframes flipToFront {
+  from {
+    transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
 }
 
 .buttonContainer {
@@ -8,34 +67,11 @@
   justify-content: space-between;
 }
 
-.actionButton {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 0.875rem;
-  padding: 10px 15px;
-  font-weight: 300;
-  color: #577dbe;
-}
-
 .quote {
   composes: mainContent from './Card.module.css';
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-}
-
-.quote::after {
-  background-image: url('../images/sanFran.jpg');
-  content: '';
-  background-size: cover;
-  opacity: 0.6;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
 }
 
 .author {

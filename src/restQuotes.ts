@@ -16,12 +16,6 @@ export const promiseToAddQuote = (quote: {}, username: string) => {
 };
 
 export const promiseToDeleteQuote = (quote: IQuote, username: string) => {
-  const payload = {
-    body: {
-      ...quote,
-      username
-    }
-  };
   return API.del('quotes', `/quotes/object/${username}/${quote.quoteId}`, {});
 };
 
