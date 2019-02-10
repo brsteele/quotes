@@ -20,10 +20,12 @@
   width: 100%;
   border-radius: 5px;
   backface-visibility: hidden;
+  box-sizing: border-box;
+  padding: 20px;
 }
 .cardBack {
   transform: rotateY(180deg);
-  background: blue;
+  background: #577dbe;
 }
 
 .cardFront {

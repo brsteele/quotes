@@ -17,7 +17,7 @@
 
 .cardBack {
   transform: rotateY(180deg);
-  background: blue;
+  background: #577dbe;
 }
 
 .cardFront {
@@ -44,12 +44,10 @@
 .mainContent {
   height: 60%;
   position: relative;
-  color: #fff;
+  color: #577dbe;
   font-weight: 400;
-  font-style: italic;
   line-height: 125%;
   font-size: 1.8rem;
-  text-shadow: 1px 1px 1px #000;
   background: transparent;
   z-index: 2;
 }
@@ -66,7 +64,7 @@
 }
 
 .tags {
-  background: #efefef;
+  background: #fff;
   border: 1px solid #efefef;
   padding: 3px 5px;
   height: 20px;
