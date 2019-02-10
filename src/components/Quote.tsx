@@ -22,7 +22,7 @@ class Quote extends React.Component<IProps, IState> {
   public render() {
     const { quote } = this.props;
     const { flipped } = this.state;
-    let flippingClass;
+    let flippingClass = '';
     if (flipped !== null) {
       flippingClass = flipped ? styles.flipped : styles.unflipped;
     }

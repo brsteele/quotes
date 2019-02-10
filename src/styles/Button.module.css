@@ -1,0 +1,26 @@
+.button {
+  border: 1px solid #577dbe;
+  border-radius: 4px;
+  font-weight: 300;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.primary,
+secondary:hover {
+  background: #577dbe;
+  color: #fff;
+}
+
+.secondary,
+.primary:hover {
+  color: #577dbe;
+  background: #fff;
+}
+
+.tertiary {
+  background: transparent;
+  border: none;
+  color: #577dbe;
+}
